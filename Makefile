@@ -1,5 +1,8 @@
+.SUFFIXES:
+
+include $(DEVKITPRO)/libnx/switch_rules
+
 TARGET := SwitchPorts
-BUILD := build
 
 SOURCES := source
 DATA := data
@@ -11,7 +14,3 @@ APP_VERSION := 1.0.0
 
 CFLAGS := -O2 -Wall
 CXXFLAGS := $(CFLAGS) -std=c++17
-
-LIBS := -lnx
-
-include $(DEVKITPRO)/libnx/switch_rules

@@ -5,8 +5,15 @@ int main(int argc, char* argv[])
 {
     consoleInit(NULL);
 
+    // Configure controller input
+    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+
+    // Initialize the controller
+    PadState pad;
+    padInitializeDefault(&pad);
+
     printf("================================\n");
-    printf("       SWITCHPORTS\n");
+    printf("          SWITCHPORTS\n");
     printf("================================\n\n");
 
     printf("Welcome to SwitchPorts!\n\n");
@@ -18,19 +25,23 @@ int main(int argc, char* argv[])
     printf("5. Favourites\n");
     printf("6. Settings\n\n");
 
-    printf("Application starting...\n");
+    printf("Press + to exit.\n");
 
     while (appletMainLoop())
     {
-        consoleUpdate(NULL);
-        hidScanInput();
+        // Read controller input
+        padUpdate(&pad);
 
-        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+        u64 kDown = padGetButtonsDown(&pad);
 
-        if (kDown & KEY_PLUS)
+        // Exit when PLUS is pressed
+        if (kDown & HidNpadButton_Plus)
             break;
+
+        consoleUpdate(NULL);
     }
 
     consoleExit(NULL);
+
     return 0;
 }

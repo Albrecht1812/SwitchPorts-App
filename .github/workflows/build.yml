@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Diagnose SwitchPorts Build
+    name: Compile Nintendo Switch App
     runs-on: ubuntu-latest
 
     container:
@@ -19,36 +19,16 @@ jobs:
       - name: Download source code
         uses: actions/checkout@v4
 
-      - name: Check current directory
-        run: |
-          echo "===== CURRENT DIRECTORY ====="
-          pwd
+      - name: Compile SwitchPorts
+        run: make
 
-      - name: Check repository files
+      - name: Check NRO file
         run: |
-          echo "===== REPOSITORY FILES ====="
-          ls -la
-          echo "===== SOURCE DIRECTORY ====="
-          ls -la source
+          ls -lh SwitchPorts.nro
+          test -f SwitchPorts.nro
 
-      - name: Display Makefile
-        run: |
-          echo "===== MAKEFILE CONTENT ====="
-          cat -A Makefile
-
-      - name: Check devkitPro
-        run: |
-          echo "===== DEVKITPRO ====="
-          echo "$DEVKITPRO"
-          echo "===== SWITCH RULES ====="
-          ls -la "$DEVKITPRO/libnx/switch_rules"
-
-      - name: Diagnose Make targets
-        run: |
-          echo "===== MAKE DATABASE ====="
-          make -pn 2>&1 | head -100 || true
-
-      - name: Check default target
-        run: |
-          echo "===== DEFAULT GOAL ====="
-          make --debug=v 2>&1 || true
+      - name: Upload NRO
+        uses: actions/upload-artifact@v4
+        with:
+          name: SwitchPorts-NRO
+          path: SwitchPorts.nro

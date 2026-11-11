@@ -1,5 +1,4 @@
 #include <switch.h>
-#include <switch/services/hid.h>
 #include <cstdio>
 
 const char* menuItems[] = {
@@ -42,6 +41,12 @@ int main(int argc, char* argv[])
 {
     consoleInit(NULL);
 
+    // Configure controller
+    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+
+    PadState pad;
+    padInitializeDefault(&pad);
+
     int selected = 0;
     bool inSection = false;
 
@@ -49,16 +54,16 @@ int main(int argc, char* argv[])
 
     while (appletMainLoop())
     {
-        hidScanInput();
+        padUpdate(&pad);
 
-        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+        u64 kDown = padGetButtonsDown(&pad);
 
-        if (kDown & KEY_PLUS)
+        if (kDown & HidNpadButton_Plus)
             break;
 
         if (!inSection)
         {
-            if (kDown & KEY_DOWN)
+            if (kDown & HidNpadButton_Down)
             {
                 selected++;
 
@@ -68,7 +73,7 @@ int main(int argc, char* argv[])
                 drawMenu(selected);
             }
 
-            if (kDown & KEY_UP)
+            if (kDown & HidNpadButton_Up)
             {
                 selected--;
 
@@ -78,7 +83,7 @@ int main(int argc, char* argv[])
                 drawMenu(selected);
             }
 
-            if (kDown & KEY_A)
+            if (kDown & HidNpadButton_A)
             {
                 inSection = true;
 
@@ -96,7 +101,7 @@ int main(int argc, char* argv[])
         }
         else
         {
-            if (kDown & KEY_B)
+            if (kDown & HidNpadButton_B)
             {
                 inSection = false;
                 drawMenu(selected);
@@ -106,6 +111,6 @@ int main(int argc, char* argv[])
         consoleUpdate(NULL);
     }
 
-    consoleExit(NULL);
+    consoleExit();
     return 0;
 }

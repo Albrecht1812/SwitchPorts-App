@@ -41,9 +41,10 @@ int main(int argc, char* argv[])
 {
     consoleInit(NULL);
 
-    // Configure controller
+    // Configure controller input
     padConfigureInput(1, HidNpadStyleSet_NpadStandard);
 
+    // Initialize controller
     PadState pad;
     padInitializeDefault(&pad);
 
@@ -58,11 +59,13 @@ int main(int argc, char* argv[])
 
         u64 kDown = padGetButtonsDown(&pad);
 
+        // Exit application
         if (kDown & HidNpadButton_Plus)
             break;
 
         if (!inSection)
         {
+            // Move down
             if (kDown & HidNpadButton_Down)
             {
                 selected++;
@@ -73,6 +76,7 @@ int main(int argc, char* argv[])
                 drawMenu(selected);
             }
 
+            // Move up
             if (kDown & HidNpadButton_Up)
             {
                 selected--;
@@ -83,6 +87,7 @@ int main(int argc, char* argv[])
                 drawMenu(selected);
             }
 
+            // Select menu item
             if (kDown & HidNpadButton_A)
             {
                 inSection = true;
@@ -101,6 +106,7 @@ int main(int argc, char* argv[])
         }
         else
         {
+            // Return to main menu
             if (kDown & HidNpadButton_B)
             {
                 inSection = false;
@@ -111,6 +117,6 @@ int main(int argc, char* argv[])
         consoleUpdate(NULL);
     }
 
-    consoleExit();
+    consoleExit(NULL);
     return 0;
 }

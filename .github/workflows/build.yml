@@ -21,7 +21,8 @@ jobs:
 
       - name: Install SDL2
         run: |
-          pacman -Sy --noconfirm switch-sdl2
+          dkp-pacman -Syu --noconfirm
+          dkp-pacman -S --noconfirm switch-sdl2
 
       - name: Check SDL2 installation
         run: |

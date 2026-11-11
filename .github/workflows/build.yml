@@ -19,6 +19,12 @@ jobs:
       - name: Download source code
         uses: actions/checkout@v4
 
+      - name: Check SDL2 availability
+        run: |
+          echo "Searching for SDL2..."
+          find /opt/devkitpro/portlibs/switch \
+            \( -name SDL.h -o -name 'libSDL2*' \) -print
+
       - name: Compile SwitchPorts
         run: make
 

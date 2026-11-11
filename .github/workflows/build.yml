@@ -19,6 +19,14 @@ jobs:
       - name: Download source code
         uses: actions/checkout@v4
 
+      - name: Install SDL2
+        run: |
+          pacman -Sy --noconfirm switch-sdl2
+
+      - name: Check SDL2 installation
+        run: |
+          test -f /opt/devkitpro/portlibs/switch/include/SDL2/SDL.h
+
       - name: Compile SwitchPorts
         run: make
 

@@ -19,14 +19,6 @@ jobs:
       - name: Download source code
         uses: actions/checkout@v4
 
-      - name: Check SDL2 configuration
-        run: |
-          echo "Checking SDL2 compiler flags..."
-          sdl2-config --cflags
-
-          echo "Checking SDL2 linker flags..."
-          sdl2-config --libs
-
       - name: Compile SwitchPorts
         run: make
 
